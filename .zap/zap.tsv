@@ -1,0 +1,9 @@
+10020 WARN  # Missing Anti-clickjacking Header
+10021 WARN  # X-Content-Type-Options Header Missing
+10037 WARN  # X-Powered-By Header
+10038 WARN  # CSP Header Not Set
+10055 WARN  # CSP Directive Issue
+10063 WARN  # Permissions Policy Header
+10098 WARN  # Cross-Domain Misconfiguration
+40040 WARN  # CORS Misconfiguration
+90004 WARN  # Spectre Vulnerability
