@@ -1,45 +1,38 @@
-name: CI Pipeline
+name: CI with SonarCloud
 
 on:
   push:
-    branches: [ main, master ]
+    branches: [master]
   pull_request:
-    branches: [ main, master ]
+    types: [opened, synchronize, reopened]
 
 jobs:
-  build-and-test:
+  build-and-analyze:
+    name: Build, Test & SonarCloud Scan
     runs-on: ubuntu-latest
 
     steps:
-      # Step 1 — Checkout repo
-      - name: Checkout code
+      - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Required for better analysis
 
-      # Step 2 — Setup Node.js
-      - name: Setup Node.js
+      - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 20
 
-      # Step 3 — Install dependencies securely
       - name: Install dependencies
         run: npm ci
 
-      # Step 5 — Run tests
-      - name: Run tests
-        run: npm test -- --watchAll=false --ci --coverage
+      - name: Run unit tests
+        run: npm test -- --watchAll=false
 
-      # Step 6 — Build the app
-      - name: Build React app
+      - name: Build the project
         run: npm run build
 
-      # Step 7 — Run security scan with npm audit
-      - name: Run npm audit (basic security check)
-        run: npm audit --audit-level=moderate || true
-
-      # Step 8 — Upload test coverage as artifact
-      - name: Upload coverage report
-        uses: actions/upload-artifact@v4
-        with:
-          name: coverage-report
-          path: coverage
+      - name: SonarCloud Scan
+        uses: SonarSource/sonarcloud-github-action@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed for PR analysis
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
