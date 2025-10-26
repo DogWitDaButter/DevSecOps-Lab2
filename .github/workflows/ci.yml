@@ -45,7 +45,7 @@ jobs:
       - name: OWASP Dependency-Check Scan
         id: dependency-check
         continue-on-error: true  # Allow debugging even if scan fails
-        uses: dependency-check/Dependency-Check_Action@master
+        uses: dependency-check/Dependency-Check_Action@main
         with:
           project: 'my-nodejs-project'  # Customize to your project name
           path: '.'                    # Project root
