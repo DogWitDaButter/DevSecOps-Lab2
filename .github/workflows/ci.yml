@@ -1,0 +1,45 @@
+name: CI Pipeline
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1 — Checkout repo
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # Step 2 — Setup Node.js
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      # Step 3 — Install dependencies securely
+      - name: Install dependencies
+        run: npm ci
+
+      # Step 5 — Run tests
+      - name: Run tests
+        run: npm test -- --watchAll=false --ci --coverage
+
+      # Step 6 — Build the app
+      - name: Build React app
+        run: npm run build
+
+      # Step 7 — Run security scan with npm audit
+      - name: Run npm audit (basic security check)
+        run: npm audit --audit-level=moderate || true
+
+      # Step 8 — Upload test coverage as artifact
+      - name: Upload coverage report
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report
+          path: coverage

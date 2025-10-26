@@ -1,8 +1,15 @@
-import { render, screen } from '@testing-library/react';
+import { render, screen, fireEvent } from '@testing-library/react';
 import App from './App';
 
-test('renders learn react link', () => {
+test('renders welcome message', () => {
   render(<App />);
-  const linkElement = screen.getByText(/learn react/i);
-  expect(linkElement).toBeInTheDocument();
+  const heading = screen.getByText(/Welcome to My Secure React App/i);
+  expect(heading).toBeInTheDocument();
+});
+
+test('renders button and handles click', () => {
+  render(<App />);
+  const button = screen.getByRole('button', { name: /click me/i });
+  expect(button).toBeInTheDocument();
+  fireEvent.click(button);
 });
