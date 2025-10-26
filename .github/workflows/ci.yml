@@ -2,7 +2,7 @@ name: CI with SonarCloud
 
 on:
   push:
-    branches: [master]
+    branches: [master, main]
   pull_request:
     types: [opened, synchronize, reopened]
 
